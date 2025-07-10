@@ -18,20 +18,22 @@ This is my submission for the Lendsqr Backend Engineer Assessment. The task was 
 
 ## 🗂️ Folder Structure
 
+```
 src/
-├── controllers/ # Request handlers
-├── models/ # DB model definitions
-├── routes/ # API route definitions
-├── services/ # Business logic
-├── utils/ # Helpers and utilities
-├── interfaces/ # Type definitions
-├── middleware/ # Auth and request processing
-└── index.ts # Entry point
-migrations/ # Knex migration files
-seed/ # Seed data scripts
-tests/ # Unit and integration tests
-.env.example # Environment variables example
-README.md # This file
+├── controllers/      # Request handlers
+├── models/           # DB model definitions
+├── routes/           # API route definitions
+├── services/         # Business logic
+├── utils/            # Helpers and utilities
+├── interfaces/       # Type definitions
+├── middleware/       # Auth and request processing
+└── index.ts          # Entry point
+migrations/           # Knex migration files
+seed/                 # Seed data scripts
+tests/                # Unit and integration tests
+.env.example          # Environment variables example
+README.md             # This file
+```
 
 ---
 
