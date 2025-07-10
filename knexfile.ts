@@ -1,15 +1,35 @@
-// Knex configuration
-import type { Knex } from 'knex';
+import { Knex } from 'knex';
 
 const config: { [key: string]: Knex.Config } = {
   development: {
-    client: 'sqlite3',
+    client: 'mysql2',
     connection: {
-      filename: './dev.sqlite3'
+      host: process.env.DB_HOST || '127.0.0.1',
+      port: parseInt(process.env.DB_PORT || '3306'),
+      user: process.env.DB_USER || 'root',
+      password: process.env.DB_PASSWORD || '',
+      database: process.env.DB_NAME || 'lendsqr_wallet_dev',
+      charset: 'utf8mb4',
     },
-    useNullAsDefault: true
+    migrations: {
+      tableName: 'knex_migrations',
+      directory: './migrations',
+    },
   },
-  // Add production and test configs as needed
+
+  production: {
+    client: 'mysql2',
+    connection: process.env.DATABASE_URL || '', // Heroku provides DATABASE_URL
+    pool: {
+      min: 2,
+      max: 10,
+    },
+    migrations: {
+      tableName: 'knex_migrations',
+      directory: './migrations',
+    },
+    debug: false,
+  },
 };
 
-module.exports = config;
+export default config;
