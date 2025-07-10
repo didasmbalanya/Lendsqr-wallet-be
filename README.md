@@ -27,14 +27,11 @@ src/
 ├── interfaces/ # Type definitions
 ├── middleware/ # Auth and request processing
 └── index.ts # Entry point
-
 migrations/ # Knex migration files
 seed/ # Seed data scripts
 tests/ # Unit and integration tests
 .env.example # Environment variables example
 README.md # This file
-
-
 
 ---
 
@@ -42,7 +39,7 @@ README.md # This file
 
 Below is the E-R Diagram showing the structure of the database:
 
-![ER Diagram](TODO)
+[ER Diagram](https://dbdesigner.page.link/cvENLcZTHiFt2zez9)
 
 ---
 
