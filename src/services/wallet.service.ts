@@ -124,4 +124,48 @@ export class WalletService {
       toWallet: updatedToWallet,
     };
   }
+
+  /**
+   * Withdraw funds from a wallet
+   */
+  async withdrawFunds(
+    userId: number,
+    amount: number,
+    description: string
+  ): Promise<Wallet> {
+    if (amount <= 0) {
+      throw new Error("Amount must be greater than zero");
+    }
+
+    const wallet = await this.walletModel.findByUserId(userId);
+    if (!wallet) {
+      throw new Error("Wallet not found");
+    }
+
+    if (wallet.balance < amount) {
+      throw new Error("Insufficient balance");
+    }
+
+    const updatedBalance = wallet.balance - amount;
+
+    await this.db.transaction(async (trx) => {
+      await this.walletModel.updateBalance(wallet.id, updatedBalance, trx);
+
+      await this.transactionModel.create(
+        {
+          type: "debit",
+          amount,
+          description,
+          from_wallet_id: wallet.id,
+        },
+        trx
+      );
+    });
+
+    const updatedWallet = await this.walletModel.findByUserId(userId);
+    if (!updatedWallet) {
+      throw new Error("Wallet not found after withdrawal");
+    }
+    return updatedWallet;
+  }
 }
