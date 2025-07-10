@@ -1,7 +1,7 @@
 export interface Wallet {
-  id?: number;
+  id: number;
   user_id: number;
-  balance?: number;
+  balance: number;
   created_at?: Date;
   updated_at?: Date;
 }
