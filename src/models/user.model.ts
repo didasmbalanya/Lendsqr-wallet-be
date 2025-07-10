@@ -1,0 +1,21 @@
+import { Knex } from "knex";
+import { User } from "../interfaces/user.interface";
+
+export class UserModel {
+  constructor(private db: Knex) {}
+
+  async findByEmail(email: string): Promise<User | null> {
+    const user = await this.db<User>("users").where({ email }).first();
+    return user || null;
+  }
+
+  async create(userData: Omit<User, "id">): Promise<User> {
+    const [id] = await this.db("users").insert(userData).returning("id");
+    const user = await this.db<User>("users").where({ id }).first();
+
+    if (!user) {
+      throw new Error("User not found after creation");
+    }
+    return user;
+  }
+}
