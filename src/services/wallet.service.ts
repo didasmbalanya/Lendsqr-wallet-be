@@ -55,4 +55,73 @@ export class WalletService {
       throw new Error("Failed to fund wallet. Please try again.");
     }
   }
+
+  /**
+   * Transfer funds between two wallets
+   */
+  async transferFunds(
+    fromUserId: number,
+    toUserId: number,
+    amount: number,
+    description?: string
+  ): Promise<{ fromWallet: Wallet; toWallet: Wallet }> {
+    if (amount <= 0) {
+      throw new Error("Amount must be greater than zero");
+    }
+
+    const [fromWallet, toWallet] = await Promise.all([
+      this.walletModel.findByUserId(fromUserId),
+      this.walletModel.findByUserId(toUserId),
+    ]);
+
+    if (!fromWallet || !toWallet) {
+      throw new Error("One or both wallets not found");
+    }
+
+    if (fromWallet.balance < amount) {
+      throw new Error("Insufficient balance");
+    }
+
+    const newFromBalance = fromWallet.balance - amount;
+    const newToBalance = toWallet.balance + amount;
+
+    await this.db.transaction(async (trx) => {
+      await this.walletModel.updateBalance(fromWallet.id, newFromBalance, trx);
+      await this.walletModel.updateBalance(toWallet.id, newToBalance, trx);
+
+      await this.transactionModel.create(
+        {
+          type: "debit",
+          amount,
+          description,
+          from_wallet_id: fromWallet.id,
+          to_wallet_id: toWallet.id,
+        },
+        trx
+      );
+
+      await this.transactionModel.create(
+        {
+          type: "credit",
+          amount,
+          description,
+          from_wallet_id: fromWallet.id,
+          to_wallet_id: toWallet.id,
+        },
+        trx
+      );
+    });
+
+    const updatedFromWallet = await this.walletModel.findByUserId(fromUserId);
+    const updatedToWallet = await this.walletModel.findByUserId(toUserId);
+
+    if (!updatedFromWallet || !updatedToWallet) {
+      throw new Error("One or both wallets not found after transfer");
+    }
+
+    return {
+      fromWallet: updatedFromWallet,
+      toWallet: updatedToWallet,
+    };
+  }
 }
