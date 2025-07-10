@@ -5,7 +5,9 @@ export class WalletModel {
   constructor(private db: Knex) {}
 
   async findByUserId(userId: number): Promise<Wallet | null> {
-    const wallet = await this.db<Wallet>("wallets").where({ user_id: userId }).first();
+    const wallet = await this.db<Wallet>("wallets")
+      .where({ user_id: userId })
+      .first();
     return wallet ?? null;
   }
 
@@ -18,7 +20,12 @@ export class WalletModel {
     return wallet;
   }
 
-  async updateBalance(walletId: number, balance: number): Promise<void> {
+  async updateBalance(
+    walletId: number,
+    balance: number,
+    trx?: Knex.Transaction
+  ): Promise<void> {
+    const db = trx ? trx : this.db;
     await this.db("wallets")
       .where({ id: walletId })
       .update({ balance, updated_at: this.db.fn.now() });

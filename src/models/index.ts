@@ -18,3 +18,7 @@ export class ModelFactory {
     return new TransactionModel(this.db);
   }
 }
+
+export { UserModel } from "./user.model";
+export { WalletModel } from "./wallet.model";
+export { TransactionModel } from "./transaction.model";
