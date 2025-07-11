@@ -4,9 +4,10 @@ import knex from "knex";
 import { ModelFactory } from "./models";
 
 // Initialize DB
-
 let environment = process.env.NODE_ENV || "development";
-const db = knex(require("../knexfile")[environment]);
+
+const { config } = require("../knexfile");
+const db = knex(config[environment]);
 
 // Initialize models
 const modelFactory = new ModelFactory(db);
