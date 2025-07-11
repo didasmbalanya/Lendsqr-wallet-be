@@ -6,7 +6,8 @@ import {
   validateRegistration,
   validateFundWallet,
   validateTransfer,
-} from "../middleware/validation.middleware";
+  authenticate
+} from "../middleware";
 import { ModelFactory } from "../models";
 import { UserService, WalletService } from "../services";
 
@@ -38,16 +39,19 @@ export function setupRoutes(
   // Wallet routes
   router.post(
     "/wallets/fund/:userId",
+    (req, res, next) => authenticate(req, res, next, userModel),
     validateFundWallet,
    (req, res) => walletController.fundWallet(req, res)
   );
   router.post(
     "/wallets/transfer/:userId",
+    (req, res, next) => authenticate(req, res, next, userModel),
     validateTransfer,
     (req, res) => walletController.transferFunds(req, res)
   );
   router.post(
     "/wallets/withdraw/:userId",
+    (req, res, next) => authenticate(req, res, next, userModel),
     validateFundWallet,
     (req, res) => walletController.withdrawFunds(req, res)
   );

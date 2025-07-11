@@ -1,5 +1,5 @@
 import { Knex } from "knex";
-import { User } from "../interfaces/user.interface";
+import { User } from "../interfaces";
 
 export class UserModel {
   constructor(private db: Knex) {}
@@ -17,5 +17,10 @@ export class UserModel {
       throw new Error("User not found after creation");
     }
     return user;
+  }
+
+  async findByUserId(id: number): Promise<User | null> {
+    const user = await this.db<User>("users").where({ id }).first();
+    return user || null;
   }
 }
