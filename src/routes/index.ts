@@ -21,7 +21,8 @@ export function setupRoutes(
   const walletModel = modelFactory.getWalletModel();
   const transactionModel = modelFactory.getTransactionModel();
 
-  const userService = new UserService(userModel);
+  const adjutorApiKey = process.env.ADJUTOR_API_KEY || '';
+  const userService = new UserService(userModel, adjutorApiKey);
   const walletService = new WalletService(db, walletModel, transactionModel);
 
   const userController = new UserController(userService);
