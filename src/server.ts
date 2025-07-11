@@ -1,3 +1,5 @@
+import 'dotenv/config'; 
+
 import "./types/express.types"
 import { app } from "./app";
 

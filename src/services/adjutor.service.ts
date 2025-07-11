@@ -2,7 +2,8 @@ import axios from "axios";
 
 export class AdjutorService {
   private readonly apiKey: string;
-  private readonly baseUrl = "https://adjutor.lendsqr.com/v2/karma ";
+  private readonly baseUrl =
+    "https://adjutor.lendsqr.com/v2/verification/karma";
 
   constructor(apiKey: string) {
     this.apiKey = apiKey;
@@ -21,11 +22,12 @@ export class AdjutorService {
 
       return response.data?.blacklisted === true;
     } catch (error) {
-      console.error(`Error checking blacklist for ${email}:`, (error as Error).message);
+      console.error(
+        `Error checking blacklist for ${email}:`,
+        (error as Error).message
+      );
       // Fail open during development, but fail closed in production
       return false;
     }
   }
 }
-
-
