@@ -85,7 +85,7 @@ export class WalletService {
     }
 
     const newFromBalance = fromWallet.balance - amount;
-    const newToBalance = toWallet.balance + amount;
+    const newToBalance = parseFloat(toWallet.balance.toString()) + amount;
 
     await this.db.transaction(async (trx) => {
       await this.walletModel.updateBalance(fromWallet.id, newFromBalance, trx);
