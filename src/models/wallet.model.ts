@@ -11,9 +11,14 @@ export class WalletModel {
     return wallet ?? null;
   }
 
-  async create(walletData: Omit<Wallet, "id">): Promise<Wallet> {
-    const [id] = await this.db("wallets").insert(walletData).returning("id");
-    const wallet = await this.db<Wallet>("wallets").where({ id }).first();
+  async create(
+    walletData: Omit<Wallet, "id">,
+    trx?: Knex.Transaction
+  ): Promise<Wallet> {
+    const db = trx ? trx : this.db;
+
+    const [id] = await db("wallets").insert(walletData).returning("id");
+    const wallet = await db<Wallet>("wallets").where({ id }).first();
     if (!wallet) {
       throw new Error("Wallet not found after creation");
     }
@@ -26,8 +31,8 @@ export class WalletModel {
     trx?: Knex.Transaction
   ): Promise<void> {
     const db = trx ? trx : this.db;
-    await this.db("wallets")
+    await db("wallets")
       .where({ id: walletId })
-      .update({ balance, updated_at: this.db.fn.now() });
+      .update({ balance, updated_at: db.fn.now() });
   }
 }

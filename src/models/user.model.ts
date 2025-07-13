@@ -9,9 +9,13 @@ export class UserModel {
     return user || null;
   }
 
-  async create(userData: Omit<User, "id">): Promise<User> {
-    const [id] = await this.db("users").insert(userData).returning("id");
-    const user = await this.db<User>("users").where({ id }).first();
+  async create(
+    userData: Omit<User, "id">,
+    trx?: Knex.Transaction
+  ): Promise<User> {
+    const db = trx ? trx : this.db;
+    const [id] = await db("users").insert(userData).returning("id");
+    const user = await db<User>("users").where({ id }).first();
 
     if (!user) {
       throw new Error("User not found after creation");

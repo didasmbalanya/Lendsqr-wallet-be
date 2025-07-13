@@ -6,7 +6,7 @@ import {
   validateRegistration,
   validateFundWallet,
   validateTransfer,
-  authenticate
+  authenticate,
 } from "../middleware";
 import { ModelFactory } from "../models";
 import { UserService, WalletService } from "../services";
@@ -21,8 +21,13 @@ export function setupRoutes(
   const walletModel = modelFactory.getWalletModel();
   const transactionModel = modelFactory.getTransactionModel();
 
-  const adjutorApiKey = process.env.ADJUTOR_API_KEY || '';
-  const userService = new UserService(userModel, adjutorApiKey);
+  const adjutorApiKey = process.env.ADJUTOR_API_KEY || "";
+  const userService = new UserService(
+    db,
+    userModel,
+    walletModel,
+    adjutorApiKey
+  );
   const walletService = new WalletService(db, walletModel, transactionModel);
 
   const userController = new UserController(userService);
@@ -31,10 +36,8 @@ export function setupRoutes(
   const router = Router();
 
   // User routes
-  router.post(
-    "/users",
-    validateRegistration,
-    (req, res) => userController.register(req, res)
+  router.post("/users", validateRegistration, (req, res) =>
+    userController.register(req, res)
   );
 
   // Wallet routes
@@ -42,7 +45,7 @@ export function setupRoutes(
     "/wallets/fund/:userId",
     (req, res, next) => authenticate(req, res, next, userModel),
     validateFundWallet,
-   (req, res) => walletController.fundWallet(req, res)
+    (req, res) => walletController.fundWallet(req, res)
   );
   router.post(
     "/wallets/transfer/:userId",

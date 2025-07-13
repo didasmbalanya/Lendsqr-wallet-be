@@ -26,7 +26,9 @@ export class WalletService {
       throw new Error("Wallet not found");
     }
 
-    const updatedBalance = wallet.balance + amount;
+    const currentBalance = parseFloat(wallet.balance.toString());
+
+    const updatedBalance = currentBalance + amount;
 
     try {
       await this.db.transaction(async (trx) => {
@@ -50,7 +52,7 @@ export class WalletService {
     } catch (error) {
       console.error(
         `Error funding wallet for user ${userId}:`,
-        error instanceof Error ? error.message : error
+        (error as Error).message
       );
       throw new Error("Failed to fund wallet. Please try again.");
     }
