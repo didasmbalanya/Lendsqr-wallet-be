@@ -16,7 +16,7 @@
     "declaration": false,
     "allowSyntheticDefaultImports": true,
     "lib": ["es2020", "dom"],
-    "types": ["express"]
+    "types": ["express", "node", "jest"],
   },
   "include": ["src/**/*"]
 }
