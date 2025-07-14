@@ -17,7 +17,6 @@ export class WalletController {
 
       res.json(wallet);
     } catch (error) {
-      console.error("Fund wallet error:", (error as Error).message);
       res.status(400).json({ message: (error as Error).message });
     }
   }
@@ -36,7 +35,6 @@ export class WalletController {
 
       res.json({ fromWallet, toWallet });
     } catch (error) {
-      console.error("Transfer funds error:", (error as Error).message);
       res.status(400).json({ message: (error as Error).message });
     }
   }
@@ -54,7 +52,6 @@ export class WalletController {
 
       res.json(wallet);
     } catch (error) {
-      console.error("Withdraw funds error:", (error as Error).message);
       res.status(400).json({ message: (error as Error).message });
     }
   }

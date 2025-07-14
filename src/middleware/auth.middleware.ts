@@ -33,7 +33,6 @@ export const authenticate = async (
     req.user = user;
     next();
   } catch (error) {
-    console.error("Authentication error:", (error as Error).message);
     return res.status(401).json({ message: "Authentication failed" });
   }
 };

@@ -50,10 +50,6 @@ export class WalletService {
       }
       return updatedWallet;
     } catch (error) {
-      console.error(
-        `Error funding wallet for user ${userId}:`,
-        (error as Error).message
-      );
       throw new Error("Failed to fund wallet. Please try again.");
     }
   }

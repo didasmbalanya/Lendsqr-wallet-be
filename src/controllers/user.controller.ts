@@ -16,7 +16,6 @@ export class UserController {
 
       res.status(201).json(user);
     } catch (error) {
-      console.error("Registration error:", (error as Error).message);
       res.status(400).json({ message: (error as Error).message });
     }
   }

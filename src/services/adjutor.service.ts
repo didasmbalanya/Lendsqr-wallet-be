@@ -22,10 +22,6 @@ export class AdjutorService {
 
       return response.data?.blacklisted === true;
     } catch (error) {
-      console.error(
-        `Error checking blacklist for ${email}:`,
-        (error as Error).message
-      );
       // Fail open during development, but fail closed in production
       return false;
     }
