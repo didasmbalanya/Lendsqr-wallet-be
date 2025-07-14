@@ -6,7 +6,7 @@
   "scripts": {
     "prebuild": "tsc knexfile.ts",
     "build": "tsc",
-    "start": "npm run build && node dist/server.js",
+    "start": "node dist/server.js",
     "dev": "nodemon src/server.ts",
     "test": "jest",
     "test:watch": "jest --watch",
