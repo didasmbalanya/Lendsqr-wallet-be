@@ -60,3 +60,5 @@ coverage/
 
 # Yarn Integrity file
 .yarn-integrity
+
+knexfile.js
