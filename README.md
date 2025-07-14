@@ -124,6 +124,12 @@ npm install
 Set up your env variables following the env.example file
 Start your MYSQL db
 
+
+Run migrations
+```bash
+npm run migrate
+```
+
 Start the development server:
 
 ```bash
