@@ -18,7 +18,8 @@
   "type": "commonjs",
   "jest": {
     "preset": "ts-jest",
-    "testEnvironment": "node"
+    "testEnvironment": "node",
+    "setupFilesAfterEnv": ["<rootDir>/jest.setup.ts"]
   },
   "devDependencies": {
     "@types/express": "^5.0.3",
